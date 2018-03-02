@@ -25,7 +25,7 @@ namespace Lagrange
 
             if (this.simulation != null) {
                 foreach (CelestialBody obj in this.simulation.Objects) {
-                    drawingContext.DrawGeometry(Brushes.Orange, null, obj.Body);
+                    drawingContext.DrawGeometry(obj.Color, null, obj.Body);
                 }
             }
         }
@@ -33,8 +33,8 @@ namespace Lagrange
         private void SimulationFrameworkElement_Loaded(object sender, RoutedEventArgs e) {
             this.simulation = new Simulation();
 
-            simulation.AddObject(new CelestialBody(100, 200, 1e14));
-            simulation.AddObject(new CelestialBody(400, 100, 1.5e14));
+            simulation.AddObject(new CelestialBody(100, 200, 1e14, Brushes.Orange));
+            simulation.AddObject(new CelestialBody(400, 100, 1.5e14, Brushes.Black));
 
             this.InvalidateVisual();
 

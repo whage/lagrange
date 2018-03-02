@@ -12,9 +12,8 @@ namespace Lagrange
     {
         private List<CelestialBody> objects;
 
-        internal List<CelestialBody> Objects {
+        public List<CelestialBody> Objects {
             get { return objects; }
-            set { objects = value; }
         }
 
         public Simulation() {
@@ -48,9 +47,16 @@ namespace Lagrange
 
                     // multiply by force (a scalar) and add to netForce
                     netForce += Vector.Multiply(force, distanceVector);
-                }
 
-                current.UpdatePosition(netForce);
+                    current.ActingForces.Add(netForce);
+                    other.ActingForces.Add(Vector.Multiply(-1, netForce));
+                }
+            }
+
+            for (int n = 0; n < this.objects.Count; n++) {
+                this.objects.ElementAt(n)
+                    .UpdatePosition()
+                    .ResetActingForces();
             }
         }
     }
