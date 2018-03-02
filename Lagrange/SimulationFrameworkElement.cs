@@ -17,22 +17,24 @@ namespace Lagrange
 
         public SimulationFrameworkElement()
         {
-
+            this.Loaded += this.SimulationFrameworkElement_Loaded;
         }
 
         protected override void OnRender(DrawingContext drawingContext) {
             base.OnRender(drawingContext);
 
             if (this.simulation != null) {
-                foreach (var obj in this.simulation.Objects) {
+                foreach (CelestialBody obj in this.simulation.Objects) {
                     drawingContext.DrawGeometry(Brushes.Orange, null, obj.Body);
                 }
             }
         }
 
-        private void GameFrameworkElement_Loaded(object sender, RoutedEventArgs e) {
-
+        private void SimulationFrameworkElement_Loaded(object sender, RoutedEventArgs e) {
             this.simulation = new Simulation();
+
+            simulation.AddObject(new CelestialBody(100, 200, 1e14));
+            simulation.AddObject(new CelestialBody(400, 100, 1.5e14));
 
             this.InvalidateVisual();
 

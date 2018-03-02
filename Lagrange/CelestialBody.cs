@@ -16,25 +16,26 @@ namespace Lagrange
             get { return mass; }
         }
 
-        public Geometry Body { get; protected set; }
-
-        protected void TransformGeometry(Transform transform) {
-            // clone and set transformation
-            Geometry clone = this.Body.Clone();
-            clone.Transform = transform;
-
-            // apply transformation
-            Geometry transformed = clone.GetFlattenedPathGeometry();
-
-            // replace body with transformed geometry
-            this.Body = transformed;
+        public CelestialBody(double x, double y, double mass) {
+            this.mass = mass;
+            this.SetBody(x, y);
         }
 
-        public void UpdatePosition(Vector force) {
-            // TODO: calculate acceleration
-            // a = F / m
+        protected void SetBody(double x, double y) {
+            this.Body = new EllipseGeometry(new Point(x, y), 5, 5);
+        }
 
-            //this.TransformGeometry(new TranslateTransform(dx, dy));
+        public Geometry Body { get; protected set; }
+
+        public void UpdatePosition(Vector force) {
+            // a = F / m
+            Vector scaledForce = Vector.Divide(force, this.Mass);
+
+            //this.TransformGeometry(new TranslateTransform(scaledForce.X, scaledForce.Y));
+            Point center = ((EllipseGeometry)this.Body).Center;
+            Vector newCenter = scaledForce + new Vector(center.X, center.Y);
+
+            this.SetBody(newCenter.X, newCenter.Y);
         }
     }
 }
