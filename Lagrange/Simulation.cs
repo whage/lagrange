@@ -10,36 +10,42 @@ namespace Lagrange
 {
     class Simulation
     {
-        private List<CelestialBody> objects;
-
-        public List<CelestialBody> Objects {
-            get { return objects; }
+        public List<CelestialBody> Objects
+        {
+            get;
+            private set;
         }
 
-        public Simulation() {
-            this.objects = new List<CelestialBody>();
+        public Simulation()
+        {
+            this.Objects = new List<CelestialBody>();
         }
 
-        public void AddObject(CelestialBody obj) {
-            this.objects.Add(obj);
+        public void AddObject(CelestialBody obj)
+        {
+            this.Objects.Add(obj);
         }
 
-        public void Step() {
+        public void Step()
+        {
             this.CalculateActingForces();
             this.ApplyActingForces();
         }
 
-        protected void CalculateActingForces() {
+        protected void CalculateActingForces()
+        {
             // universal gravitational constant
             double UGC = 6.667e-11;
 
             // calculate forces for every pair of objects
-            for (int i = 0; i < this.objects.Count; i++) {
+            for (int i = 0; i < this.Objects.Count; i++)
+            {
                 Vector netForce = new Vector(0, 0);
-                CelestialBody current = this.objects.ElementAt(i);
+                CelestialBody current = this.Objects.ElementAt(i);
 
-                for (int j = i + 1; j < this.objects.Count; j++) {
-                    CelestialBody other = this.objects.ElementAt(j);
+                for (int j = i + 1; j < this.Objects.Count; j++)
+                {
+                    CelestialBody other = this.Objects.ElementAt(j);
 
                     double dx = ((EllipseGeometry)(other.Body)).Center.X - ((EllipseGeometry)(current.Body)).Center.X;
                     double dy = ((EllipseGeometry)(other.Body)).Center.Y - ((EllipseGeometry)(current.Body)).Center.Y;
@@ -60,9 +66,11 @@ namespace Lagrange
             }
         }
 
-        protected void ApplyActingForces() {
-            for (int n = 0; n < this.objects.Count; n++) {
-                this.objects.ElementAt(n)
+        protected void ApplyActingForces()
+        {
+            for (int n = 0; n < this.Objects.Count; n++)
+            {
+                this.Objects.ElementAt(n)
                     .UpdatePosition()
                     .ResetActingForces();
             }

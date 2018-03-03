@@ -10,57 +10,62 @@ namespace Lagrange
 {
     class CelestialBody
     {
-        protected double mass;
-
-        public double Mass {
-            get { return mass; }
+        public double Mass
+        {
+            get;
+            private set;
         }
 
-        protected Geometry body;
-
-        public Geometry Body {
-            get { return body; }
+        public Geometry Body
+        {
+            get;
+            private set;
         }
 
-        protected List<Vector> actingForces;
-
-        public List<Vector> ActingForces {
-            get { return actingForces; }
+        public List<Vector> ActingForces
+        {
+            get;
+            private set;
         }
 
-        protected Brush color;
-
-        public Brush Color {
-            get { return color; }
+        public Brush Color
+        {
+            get;
+            private set;
         }
 
         protected Vector speed;
 
-        public CelestialBody(double x, double y, double mass, Brush color) {
-            this.mass = mass;
-            this.color = color;
+        public CelestialBody(double x, double y, double mass, Brush color)
+        {
+            this.Mass = mass;
+            this.Color = color;
 
-            this.actingForces = new List<Vector>();
+            this.ActingForces = new List<Vector>();
             this.speed = new Vector(0, 0);
 
             this.SetBody(x, y);
         }
 
-        public void SetSpeed(Vector s) {
+        public void SetSpeed(Vector s)
+        {
             this.speed = s;
         }
 
-        protected void SetBody(double x, double y) {
-            double radius = Math.Pow(this.mass * 5e-14, 0.3);
-            this.body = new EllipseGeometry(new Point(x, y), radius, radius);
+        protected void SetBody(double x, double y)
+        {
+            double radius = Math.Pow(this.Mass * 5e-14, 0.3);
+            this.Body = new EllipseGeometry(new Point(x, y), radius, radius);
         }
 
-        public CelestialBody UpdatePosition() {
+        public CelestialBody UpdatePosition()
+        {
             Point center = ((EllipseGeometry)this.Body).Center;
             Vector totalForce = new Vector(0, 0);
 
-            for (int i = 0; i < this.actingForces.Count; i++) {
-                totalForce += actingForces.ElementAt(i);
+            for (int i = 0; i < this.ActingForces.Count; i++)
+            {
+                totalForce += ActingForces.ElementAt(i);
             }
 
             // a = F / m
@@ -76,8 +81,9 @@ namespace Lagrange
             return this;
         }
 
-        public CelestialBody ResetActingForces() {
-            this.actingForces = new List<Vector>();
+        public CelestialBody ResetActingForces()
+        {
+            this.ActingForces = new List<Vector>();
             return this;
         }
     }

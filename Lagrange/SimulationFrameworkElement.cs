@@ -20,17 +20,21 @@ namespace Lagrange
             this.Loaded += this.SimulationFrameworkElement_Loaded;
         }
 
-        protected override void OnRender(DrawingContext drawingContext) {
+        protected override void OnRender(DrawingContext drawingContext)
+        {
             base.OnRender(drawingContext);
 
-            if (this.simulation != null) {
-                foreach (CelestialBody obj in this.simulation.Objects) {
+            if (this.simulation != null)
+            {
+                foreach (CelestialBody obj in this.simulation.Objects)
+                {
                     drawingContext.DrawGeometry(obj.Color, null, obj.Body);
                 }
             }
         }
 
-        private void SimulationFrameworkElement_Loaded(object sender, RoutedEventArgs e) {
+        private void SimulationFrameworkElement_Loaded(object sender, RoutedEventArgs e)
+        {
             this.simulation = new Simulation();
             /*
             var moon = new CelestialBody(100, 200, 1e14, Brushes.Gray);
@@ -56,10 +60,12 @@ namespace Lagrange
             for (int i = 0; i <= rowCount; i++)
             {
                 for (int j = 0; j <= columnCount; j++)
-			    {
-			        CelestialBody obj = new CelestialBody(i * width / columnCount, j * height / rowCount, 1e14, Brushes.Brown);
-                    simulation.AddObject(obj);
-			    }
+                {
+                    double x = i * width / columnCount;
+                    double y = j * height / rowCount;
+
+                    simulation.AddObject(new CelestialBody(x, y, 1e14, Brushes.Brown));
+                }
             }
 
             this.InvalidateVisual();
@@ -75,7 +81,8 @@ namespace Lagrange
             this.simLoopTimer.Start();
         }
 
-        private void Timer_Tick(object sender, EventArgs e) {
+        private void Timer_Tick(object sender, EventArgs e)
+        {
             this.simulation.Step();
 
             // trigger re-draw
