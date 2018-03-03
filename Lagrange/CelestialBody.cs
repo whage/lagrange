@@ -34,28 +34,29 @@ namespace Lagrange
             get { return color; }
         }
 
-        protected Vector momentum;
+        protected Vector speed;
 
         public CelestialBody(double x, double y, double mass, Brush color) {
             this.mass = mass;
             this.color = color;
 
             this.actingForces = new List<Vector>();
-            this.momentum = new Vector(0, 0);
+            this.speed = new Vector(0, 0);
 
             this.SetBody(x, y);
         }
 
-        public void SetMomentum(Vector m) {
-            this.momentum = m;
+        public void SetSpeed(Vector s) {
+            this.speed = s;
         }
 
         protected void SetBody(double x, double y) {
-            double radius = this.mass * 5e-14;
+            double radius = Math.Pow(this.mass * 5e-14, 0.3);
             this.body = new EllipseGeometry(new Point(x, y), radius, radius);
         }
 
         public CelestialBody UpdatePosition() {
+            Point center = ((EllipseGeometry)this.Body).Center;
             Vector totalForce = new Vector(0, 0);
 
             for (int i = 0; i < this.actingForces.Count; i++) {
@@ -64,12 +65,11 @@ namespace Lagrange
 
             // a = F / m
             Vector acceleration = Vector.Divide(totalForce, this.Mass);
+            Vector speedChange = Vector.Divide(acceleration, 20); // 20 milliseconds, hmmmm...
 
-            Point center = ((EllipseGeometry)this.Body).Center;
-            Vector newCenter = acceleration + new Vector(center.X, center.Y);
+            this.speed += speedChange;
 
-            // update momentum (add newly calculated momentum vector to previous value)
-            this.momentum += Vector.Multiply(this.mass, acceleration);
+            Vector newCenter = this.speed + new Vector(center.X, center.Y);
 
             this.SetBody(newCenter.X, newCenter.Y);
 

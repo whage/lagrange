@@ -33,13 +33,18 @@ namespace Lagrange
         private void SimulationFrameworkElement_Loaded(object sender, RoutedEventArgs e) {
             this.simulation = new Simulation();
 
-            var little = new CelestialBody(100, 200, 1e14, Brushes.Orange);
-            little.SetMomentum(new Vector(30e15,2e15));
+            var moon = new CelestialBody(100, 200, 1e14, Brushes.Gray);
+            var earth = new CelestialBody(500, 250, 4e14, Brushes.Blue);
+            var neptune = new CelestialBody(500, 500, 20e14, Brushes.Cyan);
+            var sun = new CelestialBody(500, 500, 200e14, Brushes.Orange);
+            var alpha = new CelestialBody(200, 250, 240e14, Brushes.Red);
+            earth.SetSpeed(new Vector(13, 0));
 
-            var bigger = new CelestialBody(400, 100, 1.5e14, Brushes.Black);
-
-            simulation.AddObject(little);
-            simulation.AddObject(bigger);
+            simulation.AddObject(earth);
+            //simulation.AddObject(moon);
+            simulation.AddObject(sun);
+            //simulation.AddObject(alpha);
+            //simulation.AddObject(giant);
 
             this.InvalidateVisual();
 
