@@ -34,15 +34,25 @@ namespace Lagrange
             get { return color; }
         }
 
+        protected Vector momentum;
+
         public CelestialBody(double x, double y, double mass, Brush color) {
             this.mass = mass;
-            this.actingForces = new List<Vector>();
             this.color = color;
+
+            this.actingForces = new List<Vector>();
+            this.momentum = new Vector(0, 0);
+
             this.SetBody(x, y);
         }
 
+        public void SetMomentum(Vector m) {
+            this.momentum = m;
+        }
+
         protected void SetBody(double x, double y) {
-            this.body = new EllipseGeometry(new Point(x, y), 5, 5);
+            double radius = this.mass * 5e-14;
+            this.body = new EllipseGeometry(new Point(x, y), radius, radius);
         }
 
         public CelestialBody UpdatePosition() {
@@ -53,11 +63,13 @@ namespace Lagrange
             }
 
             // a = F / m
-            Vector scaledForce = Vector.Divide(totalForce, this.Mass);
+            Vector acceleration = Vector.Divide(totalForce, this.Mass);
 
-            //this.TransformGeometry(new TranslateTransform(scaledForce.X, scaledForce.Y));
             Point center = ((EllipseGeometry)this.Body).Center;
-            Vector newCenter = scaledForce + new Vector(center.X, center.Y);
+            Vector newCenter = acceleration + new Vector(center.X, center.Y);
+
+            // update momentum (add newly calculated momentum vector to previous value)
+            this.momentum += Vector.Multiply(this.mass, acceleration);
 
             this.SetBody(newCenter.X, newCenter.Y);
 

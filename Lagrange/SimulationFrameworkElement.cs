@@ -33,8 +33,13 @@ namespace Lagrange
         private void SimulationFrameworkElement_Loaded(object sender, RoutedEventArgs e) {
             this.simulation = new Simulation();
 
-            simulation.AddObject(new CelestialBody(100, 200, 1e14, Brushes.Orange));
-            simulation.AddObject(new CelestialBody(400, 100, 1.5e14, Brushes.Black));
+            var little = new CelestialBody(100, 200, 1e14, Brushes.Orange);
+            little.SetMomentum(new Vector(30e15,2e15));
+
+            var bigger = new CelestialBody(400, 100, 1.5e14, Brushes.Black);
+
+            simulation.AddObject(little);
+            simulation.AddObject(bigger);
 
             this.InvalidateVisual();
 

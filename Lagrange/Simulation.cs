@@ -25,9 +25,15 @@ namespace Lagrange
         }
 
         public void Step() {
+            this.CalculateActingForces();
+            this.ApplyActingForces();
+        }
+
+        protected void CalculateActingForces() {
             // universal gravitational constant
             double UGC = 6.667e-11;
 
+            // calculate forces for every pair of objects
             for (int i = 0; i < this.objects.Count; i++) {
                 Vector netForce = new Vector(0, 0);
                 CelestialBody current = this.objects.ElementAt(i);
@@ -52,7 +58,9 @@ namespace Lagrange
                     other.ActingForces.Add(Vector.Multiply(-1, netForce));
                 }
             }
+        }
 
+        protected void ApplyActingForces() {
             for (int n = 0; n < this.objects.Count; n++) {
                 this.objects.ElementAt(n)
                     .UpdatePosition()
