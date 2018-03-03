@@ -65,7 +65,7 @@ namespace Lagrange
 
             // a = F / m
             Vector acceleration = Vector.Divide(totalForce, this.Mass);
-            Vector speedChange = Vector.Divide(acceleration, 20); // 20 milliseconds, hmmmm...
+            Vector speedChange = Vector.Divide(acceleration, 20); // should be dividing by dt
 
             this.speed += speedChange;
 
